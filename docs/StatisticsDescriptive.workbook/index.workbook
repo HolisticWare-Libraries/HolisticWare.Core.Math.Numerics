@@ -1,0 +1,44 @@
+---
+uti: com.xamarin.workbook
+id: 9fa432b9-8eef-489d-8844-0af6a2e6a939
+title: Nullable-Arithmetic
+platforms:
+- Console
+---
+
+# Statistics Descriptive
+
+HolisticWare.Core.Math.Statistics.Descriptive implements basic descriptive statistic algorithms in 2 flawors:
+
+* synchronous (blocking)
+
+* asynchronous (non-blocking, concurrent) implemented with async/await
+
+Following algorithms:
+
+* Mean (Average)
+
+User needs to reference assembly (or package):
+
+```csharp
+#r "../source/HolisticWare.Core.Math.Statistics.Descriptive.Sequential.NetStandard10/bin/Release/netstandard1.0/HolisticWare.Core.Math.Statistics.Descriptive.Sequential.dll"
+```
+
+Namespace inclusion (with using) statement in order to include extension methods (LINQ like).
+
+```csharp
+using Core.Math.Statistics.Descriptive.Sequential;
+```
+
+Algorithms are implemented as extension methods on IEnumerable<T>.
+
+```csharp
+int[] data_array_int_01 = new int[]{1, 2, 4, 5};
+```
+
+Applying methods on IEnumerable
+
+```csharp
+double average_01 = data_array_int_01.MeanArithmetic();
+```
+

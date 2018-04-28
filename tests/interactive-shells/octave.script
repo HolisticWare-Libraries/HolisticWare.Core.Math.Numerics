@@ -1,0 +1,18 @@
+# Shebang for Octave Script
+
+x = csvread('../unit-tests/UnitTests.NUnit/Xtras-BigData/Rand_Samp_BigData_01.csv'); 
+x
+tic ();
+mean_a = mean(x, 'a');
+toc();
+disp ("mean_a = "); disp(mean_a);
+
+tic ();
+mean_g = mean(x, 'g');
+toc();
+disp ("mean_g = "); disp(mean_g);
+
+tic ();
+mean_h = mean(x, 'h');
+toc();
+disp ("mean_h = "); disp(mean_h);

@@ -1,0 +1,186 @@
+---
+uti: com.xamarin.workbook
+id: 9fa432b9-8eef-489d-8844-0af6a2e6a939
+title: Nullable-Arithmetic
+platforms:
+- Console
+---
+
+# Nullable Collections and Aggregate Algorithms
+
+This Workbook shows Nullable arithmetics and LINQ aggregate extension methods (Sum and Average) which are needed for statistical algorithms.
+
+Define Nullable variables:
+
+```csharp
+int? i;
+int? j;
+int? sum;
+int? product;
+```
+
+Sum with initialized variables:
+
+```csharp
+i = 3;
+j = 2;
+
+sum = i + j;
+```
+
+Product with initialized variables:
+
+```csharp
+product = i * j;
+```
+
+Sum with null resulting in null:
+
+```csharp
+i = null;
+j = 2;
+
+sum = i + j;    
+```
+
+Extending that to more summands:
+
+```csharp
+int? sum01 = 1 + 2 + 4 + null + 5;
+```
+
+Product with null resulting in null:
+
+```csharp
+product = i * j;
+```
+
+Extending that to more multiplicands:
+
+```csharp
+int? product01 = 1 * 2 * 4 * null * 5;
+```
+
+## LINQ Aggregate Extension Methods
+
+Extending basic arithmetic operators to LINQ aggregate methods.
+
+Include LINQ Extension Methods by adding using statement:
+
+```csharp
+using System.Linq;
+```
+
+Define IEnumerable<Nullable> type:
+
+```csharp
+List<int?> list = new List<int?> {1,2,4,null, 5};
+```
+
+```csharp
+int? sum_linq = list.Sum();
+```
+
+```csharp
+int count = list.Count;
+```
+
+```csharp
+double? average_linq = list.Average();
+```
+
+## Pragmatic issues with semantic meaning (expectations)
+
+Seems like LINQ aggregate function Sum has different behaviour than one would expect. It most likely uses Predicate that ignores/skips null values, but this contradicts what would be expected.
+
+From mathematical standpoint Sum() is  \
+\
+`sum = list[0] + list[1] + … + list[n-1]`
+
+```csharp
+Console.WriteLine($"NOTE: No output means - null!!");
+```
+
+```csharp
+int? sum_math_trivial = 1 + 2 + 4 + null + 5;
+Console.WriteLine($"sum_math_trivial = {sum_math_trivial}");
+```
+
+Let say Sum() is trivially implemented with for loop as:
+
+```csharp
+int? sum_loop_1 = 0;
+for (int index = 0; index < list.Count; index++)
+{
+    //if(null == list[index])
+    //{
+    //    continue;
+    //}
+    //else
+    {
+        sum_loop_1 += list[index];
+    }
+};
+
+Console.WriteLine($"sum_loop_1 = {sum_loop_1}");
+```
+
+But it seems like LINQ Sum() extension method:
+
+```csharp
+Console.WriteLine($"list.Sum() = {list.Sum()}");
+```
+
+behaves like this:
+
+```csharp
+int? sum_loop_2 = 0;
+for (int index = 0; index < list.Count; index++)
+{
+    if(null == list[index])
+    {
+        continue;
+    }
+    else
+    {
+        sum_loop_2 += list[index];
+    }
+};
+
+Console.WriteLine($"sum_loop_2 = {sum_loop_2}");
+```
+
+The LINQ behaviour can be explained that nulls are interpreted as 0!!
+
+```csharp
+Console.WriteLine($"list.DefaultIfEmpty(0).Sum() = {list.DefaultIfEmpty(0).Sum()}");
+```
+
+LINQ over empty collections:
+
+```csharp
+List<int> list01 = null;
+//Console.WriteLine($"list01.Sum() = {list01.Sum()}"); // ArgumentNullException
+list01 = new List<int>{};
+Console.WriteLine($"list01.Sum() = {list01.Sum()}");
+```
+
+```csharp
+List<int?> list02 = new List<int?>{};
+Console.WriteLine($"list02.Sum() = {list02.Sum()}");
+```
+
+## Links/References
+
+*   http://www.csharp-examples.net/linq-sum/
+
+*   https://dzone.com/articles/null-sematics-linq%E2%80%99s-sum
+
+`Sum()` for `IEnumerable<Nullable<T>` implementation links
+
+*   https://github.com/dotnet/corefx/tree/master/src/System.Linq
+
+*   https://github.com/dotnet/corefx/blob/master/src/System.Linq/src/System/Linq/Sum.cs#L30
+
+*   https://github.com/dotnet/corefx/blob/master/src/System.Linq/src/System/Linq/Sum.cs#L42-L45
+

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <RootNamespace>Core.Math.Numerics</RootNamespace>
+    <AssemblyName>HolisticWare.Core.Math.Numerics</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="Core\Math\" />
+    <Folder Include="Core\Math\Numerics\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Core\Math\Numerics\FastInverseSquareRoot.config" />
+  </ItemGroup>
+</Project>
